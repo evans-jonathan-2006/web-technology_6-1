@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="icon" type="ec6.ico" href="ex6.ico">
+        <link rel="stylesheet" href="ex6.css">
+        <title>Employee Payroll Calculator</title>
+        <script src="jquery-3.7.1.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#calculate-btn').on('click', function() {
+                    let basicSalary = parseFloat($('#basic-salary').val()) || 0;
+                    let hra = parseFloat($('#hra').val()) || 0;
+                    let allowances = parseFloat($('#allowances').val()) || 0;
+                    if (basicSalary <= 0) {
+                        alert('Please enter a valid Basic Salary.');
+                        return;
+                    }
+                    const grossSalary = basicSalary + hra + allowances;
+                    let taxDeduction = 0;
+                    const annualGrossSalary = grossSalary * 12;
+                    if (annualGrossSalary > 75000) {
+                        taxDeduction = (annualGrossSalary - 75000) * 0.20;
+                    } else if (annualGrossSalary > 40000) {
+                        taxDeduction = (annualGrossSalary - 40000) * 0.10;
+                    }
+                    taxDeduction = taxDeduction / 12;
+                    const netSalary = grossSalary - taxDeduction;
+                    $('#gross-salary').text('$' + grossSalary.toFixed(2));
+                    $('#tax-deduction').text('$' + taxDeduction.toFixed(2));
+                    $('#net-salary').text('$' + netSalary.toFixed(2));
+                    $('#results').addClass('fade-in');
+    });
+});
+
+        </script>    
+    </head>
+    <body>
+        <div class="calculator-container">
+        <h1 class="title">Employee Payroll Calculator</h1>
+        
+        <div class="input-section">
+            <div class="form-group">
+                <label for="basic-salary">Basic Salary ($)</label>
+                <input type="number" id="basic-salary" min="0" placeholder="e.g., 50000" required>
+            </div>
+            <div class="form-group">
+                <label for="hra">House Rent Allowance (HRA) ($)</label>
+                <input type="number" id="hra" min="0" placeholder="e.g., 20000">
+            </div>
+            <div class="form-group">
+                <label for="allowances">Other Allowances ($)</label>
+                <input type="number" id="allowances" min="0" placeholder="e.g., 10000">
+            </div>
+            <button id="calculate-btn">Calculate Pay</button>
+        </div>
+
+        <div id="results" class="results-section">
+            <h2 class="results-title">Pay Details</h2>
+            <div class="results-grid">
+                <div class="result-item">
+                    <span>Gross Salary</span>
+                    <span id="gross-salary" class="amount">$0</span>
+                </div>
+                <div class="result-item">
+                    <span>Tax Deduction</span>
+                    <span id="tax-deduction" class="amount">$0</span>
+                </div>
+                <div class="result-item">
+                    <span>Net Salary</span>
+                    <span id="net-salary" class="amount net-amount">$0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
